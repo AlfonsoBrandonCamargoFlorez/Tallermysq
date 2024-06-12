@@ -577,7 +577,7 @@ WHERE r.Fecha >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR)
 ~~~
 ---5. Obtener las piezas que están en inventario por debajo del 10% del stock inicial
 --no tengo stok inicial pero si manejo un umbral
-
+~~~sql
 -- Procedimientos Almacenados
 -- 1. Crear un procedimiento almacenado para insertar una nueva reparación.
 
@@ -601,7 +601,8 @@ DELIMITER ;
 
 CALL InsertarReparacion('2024-06-12', 1, 2, 3, 500.00, 'Reparación de motor', '02:30:00');
 
-
+~~~
+~~~sql
 -- 2. Crear un procedimiento almacenado para actualizar el inventario de una pieza.
 
 DELIMITER //
@@ -629,7 +630,8 @@ END //
 DELIMITER ;
 
 CALL ActualizarInventarioPieza(1, 5);
-
+~~~
+~~~sql
 
 -- 3. Crear un procedimiento almacenado para eliminar una cita
 DELIMITER //
@@ -655,13 +657,15 @@ END //
 DELIMITER ;
 
 CALL EliminarCita(1);
-
+~~~
 
 --4. Crear un procedimiento almacenado para generar una factura
 
 
 -- 5 5. Crear un procedimiento almacenado para obtener el historial de reparaciones
 de un vehículo
+
+~~~sql
 
 DELIMITER //
 
@@ -681,13 +685,14 @@ DELIMITER ;
 
 
 CALL ObtenerHistorialReparaciones(1);
-
+~~~
 --66 . Crear un procedimiento almacenado para calcular el costo total de
 reparaciones de un cliente en un período
 
 -- 7. Crear un procedimiento almacenado para obtener la lista de vehículos que requieren mantenimiento basado en el kilometraje.
 
 -- 8. Crear un procedimiento almacenado para insertar una nueva orden de compra
+~~~sql
 
 DELIMITER //
 
@@ -709,9 +714,9 @@ DELIMITER ;
 
 CALL InsertarOrdenCompra('2024-06-12', 1, 500.00); -- Ejemplo de fecha, proveedor_id y total
 
-
+~~~
 -- 9. Crear un procedimiento almacenado para actualizar los datos de un cliente
-
+~~~sql
 DELIMITER //
 
 CREATE PROCEDURE ActualizarCliente(
@@ -736,9 +741,9 @@ END //
 DELIMITER ;
 
 CALL ActualizarCliente(1, 'NuevoNombre', 'NuevoApellido', '123456789', 'nuevoemail@example.com'); -- Ejemplo de datos de cliente
-
+~~~
 --- 10. Crear un procedimiento almacenado para obtener los servicios más solicitados en un período
-
+~~~sql
 DELIMITER $$
 
 CREATE PROCEDURE ObtenerServiciosMasSolicitados(
@@ -757,3 +762,4 @@ BEGIN
 END $$
 
 DELIMITER ;
+~~~
