@@ -1,5 +1,5 @@
 -- 1. Obtener el historial de reparaciones de un vehículo específico --
-
+~~~sql
 SELECT veh.placa, rep.fecha, rep.descripcion
 FROM Vehiculo AS veh
 JOIN Reparaciones AS rep
@@ -19,7 +19,7 @@ WHERE veh.placa = 'ABC123';
 | ABC123 | 2024-06-12 | Reparación de motor        |     500.00 |
 +--------+------------+----------------------------+------------+
 3 rows in set (0.00 sec)
-
+~~~
 -- 2. Calcular el costo total de todas las reparaciones realizadas por un empleado específico en un período de tiempo
 
 ---Un empleado
