@@ -129,7 +129,7 @@ WHERE cli.cliente_id = '1';
 ~~~
 
 --4. Obtener la cantidad de piezas en inventario para cada pieza
-
+~~~sql
 SELECT pieza_id, cantidad, ubicacion
 FROM Inventarios 
 
@@ -171,8 +171,11 @@ ON inv.pieza_id = pie.pieza_id;
 |       25 | Bobina de Encendido     |       90 | Bodega 1  |
 +----------+-------------------------+----------+-----------+
 
-
+~~~
 -- 5. Obtener las citas programadas para un día específico
+
+~~~sql
+
 SELECT FechaHora, Cliente_id
 FROM Citas
 WHERE DATE (fechahora) = '2023-07-10';
@@ -182,9 +185,10 @@ WHERE DATE (fechahora) = '2023-07-10';
 +---------------------+------------+
 | 2023-07-10 10:30:00 |          1 |
 +---------------------+------------+
-
+~~~
 -- 6. Generar una factura para un cliente específico en una fecha determinada
 
+~~~sql
 SELECT cli.cliente_id, cli.nombre, fac.factura_id, fac.fecha, fac.total
 FROM Clientes AS cli
 INNER JOIN Facturacion AS fac
@@ -196,8 +200,10 @@ WHERE cli.cliente_id = 1 AND DATE (fac.fecha) = '2023-01-15';
 +------------+-------------+------------+------------+---------+
 |          1 | NuevoNombre |          1 | 2023-01-15 | 5000.00 |
 +------------+-------------+------------+------------+---------+
-
+~~~
 -- 7. Listar todas las órdenes de compra y sus detalles
+
+~~~sql
 SELECT com.orden_id, com.fecha, com.proveedor_id, det.piezaid, det.preciounitario, det.cantidad
 FROM Orden_Compra AS com
 INNER JOIN Orden_Detalle AS det
@@ -234,8 +240,10 @@ ON com.orden_id = det.ordenid ;
 |        9 | 2024-06-28 |            9 |       3 |         110.00 |        4 |
 |        9 | 2024-06-28 |            9 |       4 |         120.00 |        3 |
 +----------+------------+--------------+---------+----------------+----------+
-
+~~~
 -- 8. Obtener el costo total de piezas utilizadas en una reparación específica
+
+~~~sql
 SELECT rep.reparacion_id, repie.cantidad * pie.precio
 FROM Reparaciones AS rep
 INNER JOIN Reparacion_Piezas AS repie
@@ -250,8 +258,10 @@ WHERE rep.reparacion_id = 1;
 |             1 |                    80000.00 |
 |             1 |                   240000.00 |
 +---------------+-----------------------------+
-
+~~~
 -- 9. Obtener el inventario de piezas que necesitan ser reabastecidas (cantidad menor que un umbral)
+
+~~~sql
 SELECT pieza_id, cantidad, umbral
 FROM Inventarios
 WHERE cantidad < umbral;
@@ -262,8 +272,11 @@ WHERE cantidad < umbral;
 |        1 |       10 |     20 |
 |       25 |        9 |     25 |
 +----------+----------+--------+
-
+~~~
 -- 10. Obtener la lista de servicios más solicitados en un período específico
+
+~~~sql
+
 SELECT ser.nombre, COUNT(cit.cita_id)
 FROM Servicios AS ser
 INNER JOIN Citas AS cit
@@ -280,9 +293,9 @@ LIMIT 5;
 | Revisión General |                  5 |
 | Cambio de Aceite |                  4 |
 +------------------+--------------------+
-
+~~~
 -- 11. Obtener el costo total de reparaciones para cada cliente en un período específico
-
+~~~sql
 SELECT emp.empleado_id, emp.Cargo, emp.nombre, COUNT(rep.reparacion_id) AS CantidadReparaciones, SUM(rep.CostoTotal) AS CostoTotal
 FROM Empleados AS emp
 INNER JOIN Reparaciones AS rep 
@@ -301,8 +314,10 @@ LIMIT 5;
 |           8 | Mecánico      | Diego  |                    1 |  450000.00 |
 |           4 | Mecánico      | Carlos |                    1 | 1200000.00 |
 +-------------+---------------+--------+----------------------+------------+
-
+~~~
 -- 13. Obtener las piezas más utilizadas en reparaciones durante un período específico
+
+~~~sql
 SELECT p.Nombre, COUNT(rp.pieza_id) AS CantidadUsada
 FROM Piezas AS p
 INNER JOIN Reparacion_Piezas AS rp ON p.pieza_id = rp.pieza_id
@@ -321,8 +336,10 @@ LIMIT 5;
 | Alternador             |             1 |
 | Bomba de Agua          |             1 |
 +------------------------+---------------+
-
+~~~
 -- 14. Calcular el promedio de costo de reparaciones por vehículo
+
+~~~sql
 SELECT v.placa, AVG(r.CostoTotal) AS PromedioCostoReparaciones
 FROM Vehiculo AS v
 INNER JOIN Reparaciones AS r 
@@ -354,9 +371,9 @@ ORDER BY PromedioCostoReparaciones DESC;
 | CDE567 |             545000.000000 |
 | ABC123 |             383500.000000 |
 +--------+---------------------------+
-
+~~~
 -- 15. Obtener el inventario de piezas por proveedor
-
+~~~sql
 SELECT p.proveedor_id, pr.Nombre AS ProveedorNombre, p.pieza_id, p.Nombre AS PiezaNombre, p.Precio, p.Type
 FROM Piezas AS p
 INNER JOIN Proveedores AS pr 
@@ -392,16 +409,20 @@ ORDER BY p.proveedor_id, p.pieza_id;
 |           10 | Repuestos Express    |       10 | Radiador                | 300000.00 | Refrigeración |
 |           10 | Repuestos Express    |       20 | Parabrisas              | 200000.00 | Accesorios    |
 +--------------+----------------------+----------+-------------------------+-----------+---------------+
-
+~~~
 -- 16. Listar los clientes que no han realizado reparaciones en el último año
+
+~~~sql
 SELECT c.cliente_id, c.Nombre, c.Apellido
 FROM Clientes c
 LEFT JOIN Citas ci ON c.cliente_id = ci.cliente_id
 LEFT JOIN Reparaciones r ON ci.vehiculo_id = r.vehiculo_id
 WHERE r.reparacion_id IS NULL OR r.Fecha < DATE_SUB(CURDATE(), INTERVAL 5 YEAR)
 GROUP BY c.cliente_id, c.Nombre, c.Apellido;
-
+~~~
 -- 17. Obtener las ganancias totales del taller en un período específico
+
+~~~sql
 SELECT SUM(CostoTotal) AS GananciasTotales
 FROM Reparaciones
 WHERE Fecha BETWEEN '2023-01-01' AND '2023-12-31';
@@ -411,8 +432,10 @@ WHERE Fecha BETWEEN '2023-01-01' AND '2023-12-31';
 +------------------+
 |      10860000.00 |
 +------------------+
-
+~~~
 -- 18. Listar los empleados y el total de horas trabajadas en reparaciones en un período específico
+
+~~~sql
 SELECT emp.empleado_id, emp.nombre, emp.apellido, SEC_TO_TIME(SUM(TIME_TO_SEC(rep.Duracion))) AS TotalHorasTrabajadas
 FROM Empleados AS emp
 JOIN Reparaciones AS rep 
@@ -433,8 +456,10 @@ GROUP BY emp.empleado_id, emp.nombre, emp.apellido;
 |           6 | Ana    | Rodríguez | 02:00:00             |
 |           9 | Laura  | García    | 06:00:00             |
 +-------------+--------+-----------+----------------------+
-
+~~~
 -- 19. Obtener el listado de servicios prestados por cada empleado en un período específico
+
+~~~sql
 SELECT emp.empleado_id, emp.nombre, emp.apellido, ser.nombre AS servicio_prestado, COUNT(rep.reparacion_id) AS cantidad_servicios
 FROM Empleados AS emp
 JOIN Reparaciones AS rep 
@@ -458,9 +483,11 @@ ORDER BY emp.empleado_id, ser.nombre;
 |           9 | Laura  | García    | Reparacion Motor    |                  1 |
 |          10 | Andrés | Martínez  | Cambio refrigerante |                  2 |
 +-------------+--------+-----------+---------------------+--------------------+
-
+~~~
 --- Subconsultas
 --- 1. Obtener el cliente que ha gastado más en reparaciones durante el último año.
+
+~~~sql
 SELECT c.Nombre, c.Apellido, SUM(r.CostoTotal) AS TotalGastado
 FROM Clientes AS c
 JOIN Facturacion AS f 
@@ -479,8 +506,11 @@ LIMIT 1;
 +--------+-----------+--------------+
 | Jorge  | Hernandez |   1400000.00 |
 +--------+-----------+--------------+
-
+~~~
 -- 2. Obtener la pieza más utilizada en reparaciones durante el último mes
+
+~~~sql
+
 SELECT p.Nombre AS NombrePieza, COUNT(rp.reparacion_id) AS VecesUtilizada
 FROM Piezas AS p
 JOIN Reparacion_Piezas AS rp 
@@ -497,8 +527,10 @@ LIMIT 1;
 +------------------------+----------------+
 | Correa de Distribución |              1 |
 +------------------------+----------------+
-
+~~~
 -- 3. Obtener los proveedores que suministran las piezas más caras
+
+~~~sql
 SELECT prov.Nombre AS NombreProveedor, p.Nombre AS NombrePieza, p.Precio AS PrecioPieza
 FROM Proveedores AS prov
 JOIN Piezas AS p 
@@ -514,9 +546,9 @@ ORDER BY p.Precio DESC;
 +------------------+-------------+-------------+
 | Refacciones Plus | Embrague    |   500000.00 |
 +------------------+-------------+-------------+
-
+~~~
 --- 4. Listar las reparaciones que no utilizaron piezas específicas durante el último año
-
+~~~sql
 SELECT r.reparacion_id, r.Fecha, r.Descripcion
 FROM Reparaciones r
 WHERE r.Fecha >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR)
@@ -542,7 +574,7 @@ WHERE r.Fecha >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR)
 |            39 | 2023-09-20 | Reparación profunda del motor  |
 |            41 | 2024-06-12 | Reparación de motor            |
 +---------------+------------+--------------------------------+
-
+~~~
 ---5. Obtener las piezas que están en inventario por debajo del 10% del stock inicial
 --no tengo stok inicial pero si manejo un umbral
 
