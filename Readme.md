@@ -21,8 +21,8 @@ WHERE veh.placa = 'ABC123';
 3 rows in set (0.00 sec)
 ~~~
 -- 2. Calcular el costo total de todas las reparaciones realizadas por un empleado específico en un período de tiempo
-
----Un empleado
+~~~sql
+-- Un empleado
 SELECT e.Nombre, e.Apellido, SUM(r.CostoTotal) AS CostoTotalReparaciones
 FROM Reparaciones AS r
 JOIN Empleados AS e ON r.empleado_id = e.empleado_id
@@ -44,10 +44,12 @@ JOIN Empleados e ON r.empleado_id = e.empleado_id
 WHERE r.Fecha BETWEEN '2023-01-01' AND '2023-12-31'
 GROUP BY e.Nombre, e.Apellido;
 
-
+~~~
 -- 3. Listar todos los clientes y los vehículos que poseen
 
 --todos
+
+~~~sql
 SELECT cli.nombre, cli.apellido, veh.placa, veh.marca_id
 FROM Clientes AS cli
 JOIN Vehiculo AS veh
@@ -124,7 +126,7 @@ FROM Clientes AS cli
 JOIN Vehiculo AS veh
 ON cli.cliente_id = veh.vehiculo_id
 WHERE cli.cliente_id = '1';
-
+~~~
 
 --4. Obtener la cantidad de piezas en inventario para cada pieza
 
